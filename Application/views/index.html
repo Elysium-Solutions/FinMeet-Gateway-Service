@@ -14,34 +14,18 @@
       <div class="grid">
         <div class="grid__column grid__column--is-twelve-columns">
           <div id="banner" class="everpresent-content">
-            <p id="steps" class="everpresent-content__subheading">
-              Success! You just created an Item by linking your account.
-            </p>
           </div>
         </div>
       </div>
     </main>
-
+    <button id="link-btn" class="button button--is-primary" disabled>
+      Connect with Plaid
+    </button>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
     <script>
       function render_page($, page_info) {
         // Handles redirect from the oauth response page for the oauth flow.
-        if (
-          document.referrer != null &&
-          document.referrer.includes(
-            "http://localhost:3000/oauth-response.html"
-          ) &&
-          page_info.item_id != null &&
-          page_info.item_id.length > 0
-        ) {
-          $("#container").fadeOut("fast", function () {
-            $("#item_id").text(page_info.item_id);
-            $("#access_token").text(page_info.access_token);
-            $("#intro").hide();
-            $("#app, #steps").fadeIn("slow");
-          });
-        }
 
        
           var handler = null;
