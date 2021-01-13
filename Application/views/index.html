@@ -388,7 +388,7 @@
         if (
           document.referrer != null &&
           document.referrer.includes(
-            "http://localhost:8000/oauth-response.html"
+            "http://localhost:3000/oauth-response.html"
           ) &&
           page_info.item_id != null &&
           page_info.item_id.length > 0
@@ -401,26 +401,27 @@
           });
         }
 
-        var products = page_info.products;
-        if (products.includes("assets")) {
-          $("#assets").show();
-        }
        
           var handler = null;
           $.post("/api/create_link_token", {}, function (data) {
             if (data.error != null) {
+              console.log(data);
               $(".loading-indicator").hide();
               displayError($("#container"), data.error);
               return;
             }
+            data = JSON.parse(data);
+            console.log(data);
             localStorage.setItem("link_token", data.link_token);
+            localStorage.setItem("access_token_ref_code", data.access_token_ref_code);
             handler = Plaid.create({
               token: data.link_token,
               onSuccess: function (public_token) {
                 $.post(
                   "/api/set_access_token",
                   {
-                    public_token: public_token
+                    public_token: public_token,
+                    access_token_ref_code: localStorage.getItem("access_token_ref_code")
                   },
                   function (data) {
                     $("#container").fadeOut("fast", function () {
@@ -485,6 +486,7 @@
     </div>`;
         $(element).html(html).slideDown();
       }
+      render_page(jQuery, null);
     </script>
   </body>
 </html>
